@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -20,8 +22,11 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/messages', [\App\Http\Controllers\MessageController::class, 'index'])->name('index');
-    Route::post('/messages', [\App\Http\Controllers\MessageController::class, 'store'])->name('store');
+    Route::get('/messages', [MessageController::class, 'index'])->name('index');
+    Route::post('/messages', [MessageController::class, 'store'])->name('store');
+
+    Route::get('/users/{user}', [UserController::class, 'show']);
+    Route::post('/users/{user}', [UserController::class, 'sendLike']);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
