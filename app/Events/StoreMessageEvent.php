@@ -53,6 +53,8 @@ class StoreMessageEvent implements ShouldBroadcast
      */
     public function broadcastWith(): array
     {
-        return ['message' => MessageResource::make($this->message)->resolve()];
+        return [
+            'message' => MessageResource::make($this->message)->resolve()
+        ];
     }
 }

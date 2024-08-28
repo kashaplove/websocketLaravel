@@ -47,8 +47,11 @@ export default {
 
     created() {
         window.Echo.channel('store_message')
-            .listen('.store_message', res => {
-                console.log(res);
+            .listen('.store_message', (res) => {
+                const existingMessage = this.messages.find(msg => msg.id === res.message.id);
+                if (!existingMessage) {
+                    this.messages.unshift(res.message);
+                }
             })
     },
 
@@ -56,8 +59,14 @@ export default {
         store() {
             axios.post('/messages', {body:this.body})
                 .then(res => {
-                    this.messages.unshift(res.data)
+                    const existingMessage = this.messages.find(msg => msg.id === res.message.id);
+                    if (!existingMessage) {
+                        this.messages.unshift(res.message);
+                    }
                     this.body = ''
+                })
+                .catch((err) => {
+                    console.log(err);
                 })
         }
     }
